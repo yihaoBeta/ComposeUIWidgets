@@ -11,13 +11,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.draw.rotate
 
-fun Modifier.infiniteRotate(): Modifier = composed {
+/**
+ * 无限旋转效果
+ * @param speed 旋转速度,单位圈/秒
+ */
+fun Modifier.infiniteRotate(speed: Double = 1.0): Modifier = composed {
     val infiniteTransition = rememberInfiniteTransition()
     val rotate by infiniteTransition.animateFloat(
         initialValue = 0F,
         targetValue = 360F,
         animationSpec = InfiniteRepeatableSpec(
-            animation = tween(durationMillis = 1000, easing = LinearEasing),
+            animation = tween(durationMillis = (1000.0 / speed).toInt(), easing = LinearEasing),
             RepeatMode.Restart
         )
     )
