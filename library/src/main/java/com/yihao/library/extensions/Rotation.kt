@@ -13,6 +13,7 @@ import androidx.compose.ui.draw.rotate
 
 /**
  * 无限旋转效果
+ * @author yihao
  * @param speed 旋转速度,单位圈/秒
  */
 fun Modifier.infiniteRotate(speed: Double = 1.0): Modifier = composed {

@@ -16,6 +16,7 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyGridScope
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.Button
 import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
@@ -30,6 +31,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.yihao.composetools.ui.theme.ComposeToolsTheme
 import com.yihao.library.extensions.infiniteRotate
+import com.yihao.library.extensions.pressEffect
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,11 +57,18 @@ class MainActivity : ComponentActivity() {
                                 modifier = Modifier
                                     .fillMaxSize(0.9f)
                                     .background(color = Color.White, shape = CircleShape)
-                                    .infiniteRotate(speed = 0.5),
+                                    .infiniteRotate(speed = 0.5)
+                                    .pressEffect(),
                                 imageVector = Icons.Rounded.PhotoAlbum,
                                 contentDescription = null,
                                 tint = Color.Blue
                             )
+                        }
+                        gridItem {
+                            Button(modifier = Modifier.pressEffect(), onClick = {
+                            }) {
+                                Text(text = "按压我试试")
+                            }
                         }
                     }
                 }
@@ -69,6 +78,9 @@ class MainActivity : ComponentActivity() {
 }
 
 
+/**
+ * 通用的gridview item
+ */
 fun LazyGridScope.gridItem(content: @Composable BoxScope.() -> Unit) {
     item {
         Box(
