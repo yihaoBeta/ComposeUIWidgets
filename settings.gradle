@@ -15,5 +15,5 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "ComposeTools"
-include ':app'
+include ':samples'
 include ':library'
