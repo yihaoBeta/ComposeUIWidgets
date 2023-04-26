@@ -24,6 +24,10 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.PhotoAlbum
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -32,6 +36,7 @@ import androidx.compose.ui.unit.dp
 import com.yihao.composetools.ui.theme.ComposeToolsTheme
 import com.yihao.library.extensions.infiniteRotate
 import com.yihao.library.extensions.pressEffect
+import com.yihao.library.extensions.shakingEffect
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -65,7 +70,14 @@ class MainActivity : ComponentActivity() {
                             )
                         }
                         gridItem {
-                            Button(modifier = Modifier.pressEffect(), onClick = {
+                            var toggle by remember {
+                                mutableStateOf(true)
+                            }
+
+                            Button(modifier = Modifier
+                                .pressEffect()
+                                .shakingEffect(toggle), onClick = {
+                                toggle = toggle.not()
                             }) {
                                 Text(text = "按压我试试")
                             }
