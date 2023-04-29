@@ -29,6 +29,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import kotlin.math.min
 
 /**
  * 心跳动画效果,布局外边框跳动
@@ -83,8 +84,14 @@ fun HeartBeatOfBorder(
         val placeableList = measurables.map {
             it.measure(constraints)
         }
-        val width = placeableList.maxBy { it.width }.width + (expandLength.toPx() * 2)
-        val height = placeableList.maxBy { it.height }.height + (expandLength.toPx() * 2)
+        val width = min(
+            placeableList.maxBy { it.width }.width + (expandLength.toPx() * 2),
+            constraints.maxWidth.toFloat()
+        )
+        val height = min(
+            placeableList.maxBy { it.height }.height + (expandLength.toPx() * 2),
+            constraints.maxHeight.toFloat()
+        )
 
         layout(width.toInt(), height.toInt()) {
             placeableList.forEach {

@@ -34,6 +34,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -43,6 +44,7 @@ import com.yihao.library.extensions.infiniteRotate
 import com.yihao.library.extensions.pressEffect
 import com.yihao.library.extensions.shakingEffect
 import com.yihao.library.ui.HeartBeatOfBorder
+import com.yihao.library.ui.StreamerBorder
 import com.yihao.library.ui.heartBeatOfContent
 
 class MainActivity : ComponentActivity() {
@@ -118,8 +120,7 @@ class MainActivity : ComponentActivity() {
                                         .fillMaxWidth(0.8f)
                                         .aspectRatio(3f)
                                         .background(
-                                            color = Color.Red,
-                                            shape = RoundedCornerShape(50)
+                                            color = Color.Red, shape = RoundedCornerShape(50)
                                         ),
                                     contentAlignment = Alignment.Center
                                 ) {
@@ -136,6 +137,20 @@ class MainActivity : ComponentActivity() {
                                 contentAlignment = Alignment.Center
                             ) {
                                 Text(text = "内容心跳", color = Color.Red)
+                            }
+                        }
+
+                        gridItem {
+                            StreamerBorder(
+                                borderShape = RectangleShape,
+                                colorList = listOf(Color.Red, Color.Green, Color.Green)
+                            ) {
+                                Box(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .aspectRatio(3f)
+                                        .background(color = Color.White)
+                                )
                             }
                         }
                     }
