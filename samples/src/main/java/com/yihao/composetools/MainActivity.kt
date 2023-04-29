@@ -5,17 +5,20 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyGridScope
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
@@ -31,12 +34,16 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.yihao.composetools.ui.theme.ComposeToolsTheme
+import com.yihao.library.extensions.circularTransform
 import com.yihao.library.extensions.infiniteRotate
 import com.yihao.library.extensions.pressEffect
 import com.yihao.library.extensions.shakingEffect
+import com.yihao.library.ui.HeartBeatOfBorder
+import com.yihao.library.ui.heartBeatOfContent
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -79,7 +86,56 @@ class MainActivity : ComponentActivity() {
                                 .shakingEffect(toggle), onClick = {
                                 toggle = toggle.not()
                             }) {
-                                Text(text = "按压我试试")
+                                Text(text = "按压我试试", overflow = TextOverflow.Ellipsis)
+                            }
+                        }
+
+                        gridItem {
+                            var change by remember {
+                                mutableStateOf(false)
+                            }
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth(0.9f)
+                                    .aspectRatio(2f)
+                                    .background(color = Color.Green)
+                                    .circularTransform(change)
+                                    .clickable {
+                                        change = !change
+                                    }
+                            )
+                        }
+
+                        gridItem {
+                            HeartBeatOfBorder(
+                                expandLength = 10.dp,
+                                borderShape = RoundedCornerShape(50),
+                                borderColor = Color.White,
+                                borderWidth = 4.dp
+                            ) {
+                                Box(
+                                    modifier = Modifier
+                                        .fillMaxWidth(0.8f)
+                                        .aspectRatio(3f)
+                                        .background(
+                                            color = Color.Red,
+                                            shape = RoundedCornerShape(50)
+                                        ),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    Text(text = "边框心跳效果")
+                                }
+                            }
+                        }
+                        gridItem {
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxSize(0.7f)
+                                    .heartBeatOfContent()
+                                    .background(color = Color.Green, shape = CircleShape),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Text(text = "内容心跳", color = Color.Red)
                             }
                         }
                     }
@@ -88,7 +144,6 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-
 
 /**
  * 通用的gridview item
