@@ -9,27 +9,30 @@ import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
-import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawWithCache
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.graphics.StrokeJoin
 import androidx.compose.ui.graphics.drawOutline
 import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
-import androidx.compose.ui.layout.Layout
+import androidx.compose.ui.graphics.drawscope.translate
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import kotlin.math.min
+import com.yihao.library.utils.plus
 
 /**
  * 心跳动画效果,布局外边框跳动
@@ -44,6 +47,7 @@ import kotlin.math.min
  */
 @Composable
 fun HeartBeatOfBorder(
+    modifier: Modifier = Modifier,
     expandLength: Dp,
     borderShape: Shape,
     borderColor: Color = Color.Red,
@@ -52,52 +56,42 @@ fun HeartBeatOfBorder(
     delayMillis: Int = 300,
     content: @Composable () -> Unit
 ) {
+    require(expandLength > borderWidth)
     val factor by rememberInfiniteTransition().animateFloat(
-        initialValue = 1f,
-        targetValue = 0f,
+        initialValue = 0f,
+        targetValue = 1f,
         animationSpec = InfiniteRepeatableSpec(
             animation = tween(durationMillis = duration, delayMillis = delayMillis),
             RepeatMode.Reverse
         )
     )
     val density = LocalDensity.current
-    Layout(
-        modifier = Modifier.drawWithContent {
-            drawContent()
-            drawIntoCanvas {
-                val gap = expandLength.toPx() * factor
-                val outline = borderShape.createOutline(
-                    Size(size.width - gap * 2, size.height - gap * 2),
-                    layoutDirection,
-                    density
-                )
-                it.translate(gap, gap)
-                drawOutline(
-                    outline,
-                    color = borderColor,
-                    style = Stroke(width = borderWidth.toPx(), join = StrokeJoin.Round)
-                )
-            }
-        },
-        content = content
-    ) { measurables, constraints ->
-        val placeableList = measurables.map {
-            it.measure(constraints)
-        }
-        val width = min(
-            placeableList.maxBy { it.width }.width + (expandLength.toPx() * 2),
-            constraints.maxWidth.toFloat()
-        )
-        val height = min(
-            placeableList.maxBy { it.height }.height + (expandLength.toPx() * 2),
-            constraints.maxHeight.toFloat()
-        )
+    Box(
+        modifier = modifier
+            .padding(expandLength)
+            .drawWithCache {
+                val expandLengthValue = expandLength.toPx()
+                val borderWidthValue = borderWidth.toPx()
+                val halfBorderWidth = borderWidthValue / 2
+                onDrawBehind {
+                    val gap = (expandLengthValue - borderWidthValue) * factor
+                    val outline = borderShape.createOutline(
+                        size = (size + Size(gap, gap) * 2f) + borderWidthValue,
+                        layoutDirection,
+                        density
+                    )
 
-        layout(width.toInt(), height.toInt()) {
-            placeableList.forEach {
-                it.placeRelative(expandLength.toPx().toInt(), expandLength.toPx().toInt())
-            }
-        }
+                    translate(-gap - halfBorderWidth, -gap - halfBorderWidth) {
+                        drawOutline(
+                            outline,
+                            color = borderColor,
+                            style = Stroke(width = borderWidthValue)
+                        )
+                    }
+                }
+            }, contentAlignment = Alignment.Center
+    ) {
+        content()
     }
 }
 
@@ -133,10 +127,19 @@ fun Modifier.heartBeatOfContent(
 @Preview
 @Composable
 fun TestPrev() {
-    Box(
+    HeartBeatOfBorder(
         modifier = Modifier
-            .heartBeatOfContent()
-            .size(100.dp, 50.dp)
-            .background(color = Color.Red, shape = RoundedCornerShape(5.dp))
-    )
+            .size(300.dp)
+            .aspectRatio(2.5f),
+        expandLength = 20.dp,
+        borderWidth = 4.dp,
+        borderShape = RoundedCornerShape(50)
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .clip(RoundedCornerShape(50))
+                .background(color = Color.Green)
+        )
+    }
 }

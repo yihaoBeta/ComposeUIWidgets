@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyGridScope
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -33,19 +34,22 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.yihao.composetools.ui.theme.ComposeToolsTheme
 import com.yihao.library.extensions.circularTransform
 import com.yihao.library.extensions.infiniteRotate
 import com.yihao.library.extensions.pressEffect
 import com.yihao.library.extensions.shakingEffect
+import com.yihao.library.extensions.streamerBorder
 import com.yihao.library.ui.HeartBeatOfBorder
-import com.yihao.library.ui.StreamerBorder
 import com.yihao.library.ui.heartBeatOfContent
+import com.yihao.library.ui.shinningEffect
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -79,19 +83,25 @@ class MainActivity : ComponentActivity() {
                             )
                         }
                         gridItem {
+                            Button(modifier = Modifier
+                                .pressEffect(),
+                                onClick = {
+                                }) {
+                                Text(text = "按压我试试", overflow = TextOverflow.Ellipsis)
+                            }
+                        }
+                        gridItem {
                             var toggle by remember {
                                 mutableStateOf(true)
                             }
 
                             Button(modifier = Modifier
-                                .pressEffect()
                                 .shakingEffect(toggle), onClick = {
                                 toggle = toggle.not()
                             }) {
-                                Text(text = "按压我试试", overflow = TextOverflow.Ellipsis)
+                                Text(text = "点我抖动", overflow = TextOverflow.Ellipsis)
                             }
                         }
-
                         gridItem {
                             var change by remember {
                                 mutableStateOf(false)
@@ -110,15 +120,17 @@ class MainActivity : ComponentActivity() {
 
                         gridItem {
                             HeartBeatOfBorder(
-                                expandLength = 10.dp,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .aspectRatio(2.5f),
+                                expandLength = 15.dp,
                                 borderShape = RoundedCornerShape(50),
                                 borderColor = Color.White,
                                 borderWidth = 4.dp
                             ) {
                                 Box(
                                     modifier = Modifier
-                                        .fillMaxWidth(0.8f)
-                                        .aspectRatio(3f)
+                                        .fillMaxSize()
                                         .background(
                                             color = Color.Red, shape = RoundedCornerShape(50)
                                         ),
@@ -141,16 +153,32 @@ class MainActivity : ComponentActivity() {
                         }
 
                         gridItem {
-                            StreamerBorder(
-                                borderShape = RectangleShape,
-                                colorList = listOf(Color.Red, Color.Green, Color.Green)
+                            Box(
+                                modifier = Modifier
+                                    .size(300.dp)
+                                    .clip(RectangleShape)
+                                    .background(Color.White)
+                                    .streamerBorder(
+                                        borderShape = RectangleShape, colorList = listOf(
+                                            Color.Red,
+                                            Color.Green,
+                                            Color.Cyan
+                                        ),
+                                        borderWidth = 8.dp
+                                    )
+                            )
+                        }
+
+                        gridItem {
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth(0.8f)
+                                    .aspectRatio(2.5f)
+                                    .background(Color.LightGray)
+                                    .shinningEffect(),
+                                contentAlignment = Alignment.Center
                             ) {
-                                Box(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .aspectRatio(3f)
-                                        .background(color = Color.White)
-                                )
+                                Text(text = "闪光效果", fontSize = 30.sp)
                             }
                         }
                     }
