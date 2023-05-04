@@ -9,6 +9,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
@@ -44,10 +45,13 @@ import androidx.compose.ui.unit.sp
 import com.yihao.composetools.ui.theme.ComposeToolsTheme
 import com.yihao.library.extensions.circularTransform
 import com.yihao.library.extensions.infiniteRotate
+import com.yihao.library.extensions.luminousBorder
 import com.yihao.library.extensions.pressEffect
 import com.yihao.library.extensions.shakingEffect
 import com.yihao.library.extensions.streamerBorder
 import com.yihao.library.ui.HeartBeatOfBorder
+import com.yihao.library.ui.SwitchDirection
+import com.yihao.library.ui.SwitchPageLayout
 import com.yihao.library.ui.heartBeatOfContent
 import com.yihao.library.ui.shinningEffect
 
@@ -179,6 +183,68 @@ class MainActivity : ComponentActivity() {
                                 contentAlignment = Alignment.Center
                             ) {
                                 Text(text = "闪光效果", fontSize = 30.sp)
+                            }
+                        }
+
+                        gridItem {
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxSize(0.9f)
+                                    .aspectRatio(2f)
+                                    .luminousBorder(radius = 15f, shape = RoundedCornerShape(50))
+                                    .clip(RoundedCornerShape(50))
+                                    .background(Color.White),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Text(text = "发光边框", color = Color.Black)
+                            }
+                        }
+
+                        gridItem {
+                            val stringList = listOf("Hello", "world", "你好", "世界")
+                            val colors = listOf(Color.Red, Color.Green, Color.Blue, Color.Yellow)
+                            Column(
+                                modifier = Modifier.fillMaxSize(),
+                                verticalArrangement = Arrangement.SpaceEvenly,
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                SwitchPageLayout(
+                                    modifier = Modifier
+                                        .fillMaxWidth(0.9f)
+                                        .padding(8.dp)
+                                        .clip(RoundedCornerShape(50))
+                                        .background(Color.Blue)
+                                ) {
+                                    repeat(stringList.size) { index ->
+                                        Box(
+                                            modifier = Modifier.fillMaxWidth(),
+                                            contentAlignment = Alignment.Center
+                                        ) {
+                                            Text(text = stringList[index], fontSize = 26.sp)
+                                        }
+                                    }
+                                }
+                                SwitchPageLayout(
+                                    modifier = Modifier
+                                        .clip(RoundedCornerShape(20.dp))
+                                        .padding(8.dp),
+                                    switchDirection = SwitchDirection.HORIZONTAL
+                                ) {
+                                    repeat(stringList.size) { index ->
+                                        Box(
+                                            modifier = Modifier
+                                                .fillMaxWidth(0.9f)
+                                                .background(color = colors[index]),
+                                            contentAlignment = Alignment.Center
+                                        ) {
+                                            Text(
+                                                text = stringList[index],
+                                                fontSize = 26.sp,
+                                                color = Color.Black
+                                            )
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
