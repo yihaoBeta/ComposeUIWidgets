@@ -26,6 +26,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 
+/**
+ * 发光边框效果
+ * @author yihao
+ * @param shape:边框形状
+ * @param borderColor:边框颜色
+ * @param borderWidth:边框宽度
+ * @param radius:blur半径
+ */
 fun Modifier.luminousBorder(
     shape: Shape,
     borderColor: Color = Color.Red,

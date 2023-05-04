@@ -32,6 +32,18 @@ import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.onEach
 
+/**
+ * 自动切换页面效果，可选水平/垂直切换方向
+ * @author yihao
+ * @param modifier
+ * @param switchDirection:页面动画方向
+ * @see SwitchDirection
+ * @param autoSwitch:是否开启自动切换
+ * @param delayMillis:切换时延，每个页面展示的时间
+ * @param duration: 切换动画持续时长
+ * @param onClick: 点击事件回调
+ * @param content:每个页面的视图，有几个页面就在同一层级定义几个组件，参考Samples
+ */
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun SwitchPageLayout(
