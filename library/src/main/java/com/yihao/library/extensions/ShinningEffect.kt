@@ -1,4 +1,4 @@
-package com.yihao.library.ui
+package com.yihao.library.extensions
 
 import android.graphics.Matrix
 import androidx.compose.animation.core.RepeatMode
