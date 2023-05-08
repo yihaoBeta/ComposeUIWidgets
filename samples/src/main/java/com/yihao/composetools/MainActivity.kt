@@ -1,5 +1,6 @@
 package com.yihao.composetools
 
+import android.graphics.Typeface
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -29,6 +30,7 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.PhotoAlbum
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -48,12 +50,17 @@ import com.yihao.library.extensions.infiniteRotate
 import com.yihao.library.extensions.luminousBorder
 import com.yihao.library.extensions.pressEffect
 import com.yihao.library.extensions.shakingEffect
+import com.yihao.library.extensions.shinningEffect
 import com.yihao.library.extensions.streamerBorder
+import com.yihao.library.ui.FlipTextView
 import com.yihao.library.ui.HeartBeatOfBorder
 import com.yihao.library.ui.SwitchDirection
 import com.yihao.library.ui.SwitchPageLayout
 import com.yihao.library.ui.heartBeatOfContent
-import com.yihao.library.ui.shinningEffect
+import com.yihao.library.ui.repeat
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.onEach
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -246,6 +253,33 @@ class MainActivity : ComponentActivity() {
                                     }
                                 }
                             }
+                        }
+
+                        gridItem {
+                            var from by remember {
+                                mutableStateOf("0")
+                            }
+                            var to by remember {
+                                mutableStateOf("0")
+                            }
+                            LaunchedEffect(key1 = null, block = {
+                                (0..9).asSequence().repeat().asFlow().onEach { delay(1000) }
+                                    .collect { num ->
+                                        from = num.toString()
+                                        to = if (num == 9) "0" else (num + 1).toString()
+                                    }
+                            })
+                            FlipTextView(
+                                modifier = Modifier.fillMaxWidth(0.9f),
+                                fontSize = 120.sp,
+                                from = from,
+                                to = to,
+                                backgroundColor = Color.White,
+                                textColor = Color.Black,
+                                textTypeface = Typeface.SANS_SERIF,
+                                dividerColor = Color.Black,
+                                dividerWidth = 2.dp
+                            )
                         }
                     }
                 }
