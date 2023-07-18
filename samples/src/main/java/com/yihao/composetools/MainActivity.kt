@@ -45,7 +45,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.yihao.composetools.ui.theme.ComposeToolsTheme
-import com.yihao.library.extensions.circularTransform
 import com.yihao.library.extensions.infiniteRotate
 import com.yihao.library.extensions.luminousBorder
 import com.yihao.library.extensions.pressEffect
@@ -112,21 +111,6 @@ class MainActivity : ComponentActivity() {
                             }) {
                                 Text(text = "点我抖动", overflow = TextOverflow.Ellipsis)
                             }
-                        }
-                        gridItem {
-                            var change by remember {
-                                mutableStateOf(false)
-                            }
-                            Box(
-                                modifier = Modifier
-                                    .fillMaxWidth(0.9f)
-                                    .aspectRatio(2f)
-                                    .background(color = Color.Green)
-                                    .circularTransform(change)
-                                    .clickable {
-                                        change = !change
-                                    }
-                            )
                         }
 
                         gridItem {
