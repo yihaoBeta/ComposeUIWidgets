@@ -68,7 +68,7 @@ class MainActivity : ComponentActivity() {
             ComposeToolsTheme {
                 // A surface container using the 'background' color from the theme
                 Scaffold(topBar = {
-                    TopAppBar(title = { Text(text = "Compose tools sample") })
+                    TopAppBar(title = { Text(text = "Compose ui widgets sample") })
                 }) {
                     LazyVerticalGrid(
                         contentPadding = PaddingValues(
