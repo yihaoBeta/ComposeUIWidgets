@@ -33,6 +33,15 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.yihao.library.utils.toOffset
 
+/**
+ * 流光边框效果
+ * @author yihao
+ * @param borderWidth:边框宽度
+ * @param borderShape:边框形状
+ * @param colorList:颜色列表
+ * @param colorStops:颜色分割列表
+ * @param tileMode:重复模式
+ */
 fun Modifier.streamerBorder(
     borderWidth: Dp = 4.dp,
     borderShape: Shape,
